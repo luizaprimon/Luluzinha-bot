@@ -1,0 +1,19 @@
+const Discord = require('discord.js');
+
+const client = new Discord.Client();
+
+client.once('ready', () => {
+  console.log('Bot online!');
+});
+
+client.on('guildMemberAdd', (member) => {
+  console.log(`${member.user.username} entrou no servidor!`);
+
+  // Pega o cargo que será atribuído aos novos membros
+  const cargoMembros = member.guild.roles.cache.find(role => role.name === "Membros");
+
+  // Adiciona o cargo ao novo membro
+  member.roles.add(cargoMembros);
+});
+
+client.login('MTA5NzY1MDA2MzA3OTEzMzM0NQ.G4D0QM.cCOS5M9i215SwN4G24HMCT7339OlG5OkAiybUk');
