@@ -1,0 +1,30 @@
+const Discord = require('discord.js');
+const ytdl = require('ytdl-core');
+
+const client = new Discord.Client();
+const token = '1097650063079133345';
+
+client.on('ready', () => {
+  console.log(`Bot iniciado como ${client.user.tag}!`);
+});
+
+client.on('message', async message => {
+  if (message.content.startsWith('!play')) {
+    const voiceChannel = message.member.voice.channel;
+    if (!voiceChannel) return message.reply('Você precisa estar em um canal de voz para usar este comando!');
+    const args = message.content.split(' ');
+    const streamOptions = { seek: 0, volume: 1 };
+    const stream = ytdl(args[1], { filter: 'audioonly' });
+    const dispatcher = voiceChannel.play(stream, streamOptions);
+    dispatcher.on('start', () => {
+      console.log('Reproduzindo música...');
+      message.reply(`Tocando: ${args[1]}`);
+    });
+    dispatcher.on('finish', () => {
+      console.log('Música finalizada.');
+    });
+    dispatcher.on('error', console.error);
+  }
+});
+
+client.login(1097650063079133345);
